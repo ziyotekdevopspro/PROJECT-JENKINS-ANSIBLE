@@ -5,6 +5,7 @@ pipeline {
         stage("SCM checkout") {
             steps {
                 sh """
+                    pwd
                     ansible test -m ping
                 """
             }
