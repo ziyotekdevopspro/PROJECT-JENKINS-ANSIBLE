@@ -1,18 +1,12 @@
 pipeline {
-    agent {
-        node {
-            label "jenkins-s3-ansible"
-        }
-    }
+    agent { label "jenkins-s3-ansible"}
+    
     stages {
         stage("SCM checkout") {
             steps {
-                git 'https://github.com/ziyotekdevopspro/PROJECT-JENKINS-ANSIBLE.git'
-            }
-        }
-        stage("SCM checkout") {
-            steps {
-                git 'https://github.com/ziyotekdevopspro/PROJECT-JENKINS-ANSIBLE.git'
+                sh """
+                    ansible test -m ping
+                """
             }
         }
     }
