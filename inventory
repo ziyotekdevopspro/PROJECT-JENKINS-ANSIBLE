@@ -1,10 +1,5 @@
-[all]
-192.168.37.[10:30]
-192.168.37.40
-192.168.37.44
-
 [test]
-192.168.37.112 ansible_user=jenkins
+192.168.37.112
 
 [k8s]
 192.168.37.27
@@ -22,9 +17,3 @@
 
 [jenkins_deploy]
 192.168.37.111
-
-[jenkins_slaves:children]
-jenkins_s1
-jenkins_s2
-jenkins_deploy
-ansible
