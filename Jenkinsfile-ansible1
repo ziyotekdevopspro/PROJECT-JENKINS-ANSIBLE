@@ -5,7 +5,7 @@ pipeline {
         stage("Run Ansible adhoc") {
             steps {
                 sh """
-                    ansible inventory test -m ping
+                    ansible -i inventory test -m ping
                 """
             }
         }
