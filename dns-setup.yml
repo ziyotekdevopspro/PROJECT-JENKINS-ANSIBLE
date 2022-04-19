@@ -1,19 +1,66 @@
-version: '3'
-services:
-  db:
-    image: mysql:5.7
-    restart: always
-    environment:
-      MYSQL_DATABASE=student-management
-      MYSQL_USER=root
-      MYSQL_PASSWORD=root
-      MYSQL_ROOT_PASSWORD=password
-    ports:
-      # MySQL Port running inside container
-      - '3306:3306'
-      # Where our data will be persisted
-    volumes:
-      - my-db:/var/lib/mysql
-# Names our volume
-volumes:
-  my-db:
+---
+#Created by Khai Hoang (Kyle)
+#Project:DEVOPS16
+#Description: Setup DNS for boxes 
+- name: Update Network Interface for boxes.
+  hosts: test
+  gather_facts: no
+  become: true
+  vars: 
+    #ifcfg_path: /home/ansible/PROJECT/ifcfg-ens192 #For test
+    ifcfg_path: /etc/sysconfig/network-scripts/ifcfg-ens192
+    DNS1_string: DNS1
+    DNS1_IP: DNS1=192.168.37.10
+    DNS2_string: DNS2
+    DNS2_IP: DNS2=192.168.37.30
+    
+  tasks:
+  - name: register a variable
+    ansible.builtin.shell: cat '{{ ifcfg_path }}'
+    register: file_contents
+  #DNS1 setup
+  - name: Add DNS1 value to network configuration file
+    lineinfile:
+      dest: '{{ ifcfg_path }}'
+      regexp: '^{{DNS1_string}}'
+      line: "{{ DNS1_IP }}"
+      state: present
+      backup: yes
+    when: file_contents.stdout.find(DNS1_string) == -1
+
+  - name: Update DNS1 value to network configuration file
+    lineinfile:
+      dest: '{{ ifcfg_path }}'
+      regexp: '^{{DNS1_string}}'
+      line: "{{ DNS1_IP }}"
+      backrefs: yes
+      firstmatch: yes
+      state: present
+      backup: yes
+    when: file_contents.stdout.find(DNS1_string) != -1
+
+  #DNS2 setup
+  - name: Add DNS2 value to network configuration file
+    lineinfile:
+      dest: '{{ ifcfg_path }}'
+      regexp: '^{{DNS2_string}}'
+      line: "{{ DNS2_IP }}"
+      state: present
+      backup: yes
+    when: file_contents.stdout.find(DNS2_string) == -1
+
+  - name: Update DNS2 value to network configuration file
+    lineinfile:
+      dest: '{{ ifcfg_path }}'
+      regexp: '^{{DNS2_string}}'
+      line: "{{ DNS2_IP }}"
+      backrefs: yes
+      firstmatch: yes
+      state: present
+      backup: yes
+    when: file_contents.stdout.find(DNS2_string) != -1
+
+  - name: Restart network
+    service:
+      name: network
+      state: restarted
