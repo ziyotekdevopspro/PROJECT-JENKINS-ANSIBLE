@@ -1,4 +1,4 @@
-[test]
+[test_server]
 192.168.37.112
 
 [k8s]
