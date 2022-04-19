@@ -2,11 +2,10 @@ pipeline {
     agent { label "jenkins-s3-ansible"}
     
     stages {
-        stage("SCM checkout") {
+        stage("Run Ansible adhoc") {
             steps {
                 sh """
-                    pwd
-                    ansible test -m ping
+                    ansible inventory test -m ping
                 """
             }
         }
