@@ -3,7 +3,7 @@
 #Project:DEVOPS16
 #Description: Setup DNS for boxes 
 - name: Update Network Interface for boxes.
-  hosts: test
+  hosts: test_server
   gather_facts: no
   become: true
   vars: 
