@@ -1,0 +1,15 @@
+pipeline {
+    agent { label "jenkins-s2"}
+    environment {
+	  JENKINS_USER = "user1"
+	}
+    stages {
+        stage("Create a Jenkins user") {
+            steps {
+                sh """
+                    sudo useradd $JENKINS_USER; sudo usermod -aG wheel,jenkins $JENKINS_USER
+                """
+            }
+        }
+    }
+}
