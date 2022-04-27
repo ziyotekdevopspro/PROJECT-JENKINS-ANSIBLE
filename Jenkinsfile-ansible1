@@ -5,8 +5,8 @@ pipeline {
         stage("Run Ansible adhoc") {
             steps {
                 sh """
-                    #ansible -i inventory test_server -m ping
-                    ansible-playbook -i inventory dns-setup.yml
+                    ansible -i inventory test_server -m ping
+                    #ansible-playbook -i inventory dns-setup.yml
                 """
             }
         }
